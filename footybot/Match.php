@@ -10,14 +10,14 @@ class Match implements IMatch
 
     private $date;
     private $players;
-    private $isComplete;
+    private $isComplete = false;
     private $maxPlayers = 10;
+    private $teams = [];
 
     public function __construct($date)
     {
         $this->date = $date;
         $this->players = [];
-        $this->isComplete = false;
     }
 
     public function getMatch()
@@ -35,9 +35,14 @@ class Match implements IMatch
         return $this->players;
     }
 
-    public function addPlayers()
+    public function setMatchComplete()
     {
-        // TODO: Implement addPlayers() method.
+        $this->isComplete = !$this->isComplete;
+    }
+
+    public function isMatchComplete()
+    {
+        return $this->isComplete;
     }
 
     public function getPlayers()
@@ -55,6 +60,21 @@ class Match implements IMatch
         unset($this->players[$position]);
         //reindex array
         $this->players = array_values($this->players);
+    }
+
+    public function setTeams($teams)
+    {
+        $index = array_search('vs', $teams);
+        unset($teams[$index]);
+        $teamA = explode(',', $teams[0]);
+        $teamB = explode(',', $teams[2]);
+
+        $this->teams = [$teamA, $teamB];
+    }
+
+    public function getTeams()
+    {
+        return $this->teams;
     }
 
 }
