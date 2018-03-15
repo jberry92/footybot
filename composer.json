@@ -1,0 +1,24 @@
+{
+    "name": "jbe68/footybot",
+    "description": "Slack bot for organising football matches",
+    "type": "slack bot",
+    "authors": [
+        {
+            "name": "Josh Berry",
+            "email": "joshua.berry@skybettingandgaming.com"
+        }
+    ],
+    "require": {
+        "botman/botman": "^2.3",
+        "mpociot/slack-client": "^1.0",
+        "botman/driver-slack": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "FootyBot\\": "footybot/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0"
+    }
+}
