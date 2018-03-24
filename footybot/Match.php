@@ -4,13 +4,13 @@ namespace FootyBot;
 
 use FootyBot\Exceptions\PlayerLimitReachedException;
 use FootyBot\Exceptions\PlayerNotFoundException;
+use FootyBot\Exceptions\PlayerAlreadyJoinedException;
 
 class Match implements IMatch
 {
 
     private $date;
     private $players;
-    private $isComplete = false;
     private $maxPlayers = 10;
     private $teams = [];
 
@@ -20,35 +20,29 @@ class Match implements IMatch
         $this->players = [];
     }
 
-    public function getMatch()
+    public function getMatchDate()
     {
-        $matchData = ["date" => $this->date, "players" => $this->players];
-        return $matchData;
-    }
-
-    public function addPlayer($player)
-    {
-        if (count($this->players) === $this->maxPlayers) {
-            throw new PlayerLimitReachedException('Player limit reached');
-        }
-        $this->players[] = $player;
-        return $this->players;
-    }
-
-    public function setMatchComplete()
-    {
-        $this->isComplete = !$this->isComplete;
-    }
-
-    public function isMatchComplete()
-    {
-        return $this->isComplete;
+        return $this->date;
     }
 
     public function getPlayers()
     {
         return $this->players;
     }
+
+    public function addPlayer($player)
+    {
+        if (count($this->players) === $this->maxPlayers) {
+            throw new PlayerLimitReachedException();
+        }
+
+        if (in_array($player, $this->players)) {
+            throw new PlayerAlreadyJoinedException();
+        }
+        $this->players[] = $player;
+        return $this->players;
+    }
+
 
     public function removePlayer($player)
     {
@@ -62,14 +56,31 @@ class Match implements IMatch
         $this->players = array_values($this->players);
     }
 
-    public function setTeams($teams)
+    public function setTeams(string $teams)
     {
-        $index = array_search('vs', $teams);
-        unset($teams[$index]);
-        $teamA = explode(',', $teams[0]);
-        $teamB = explode(',', $teams[2]);
+        $teams = explode(' vs ', $teams);
+        if (count($teams) != 2) {
+            return;
+        }
 
-        $this->teams = [$teamA, $teamB];
+        $teamAPlayers = explode(',', $teams[0]);
+        $teamBPlayers = explode(',', $teams[1]);
+        if ($this->teams) {
+            return $this->teams = [
+                array_merge($this->teams[0], array_map('trim', $teamAPlayers)),
+                array_merge($this->teams[1], array_map('trim', $teamBPlayers)),
+            ];
+        }
+
+        $this->teams = [
+            array_map('trim', $teamAPlayers),
+            array_map('trim', $teamBPlayers)
+        ];
+    }
+
+    public function clearTeams()
+    {
+        $this->teams = [];
     }
 
     public function getTeams()

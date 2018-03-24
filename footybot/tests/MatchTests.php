@@ -24,9 +24,8 @@ class MatchTests extends TestCase
     public function testMatch_is_created_with_set_command()
     {
         $match = $this->match;
-        $currentMatch = $match->getMatch();
-        $this->assertEquals(["date" => "Weds 17/12 12:00",
-            "players" => []], $currentMatch);
+        $currentMatchDate = $match->getMatchDate();
+        $this->assertEquals("Weds 17/12 12:00", $currentMatchDate);
     }
 
     public function testMatch_only_allows_ten_players()
@@ -67,18 +66,10 @@ class MatchTests extends TestCase
         $match->removePlayer('player');
     }
 
-    public function testMatch_sets_match_complete_when_complete_match_called()
-    {
-        $match = $this->match;
-        $match->setMatchComplete();
-        $isMatchComplete = $match->isMatchComplete();
-        $this->assertEquals(true, $isMatchComplete);
-    }
-
     public function testMatch_set_teams_sets_the_correct_teams_when_all_players_added()
     {
         $match = $this->match;
-        $teams = ['a', 'b', 'c', 'd', 'e', 'vs', 'e', 'd', 'c', 'b', 'a'];
+        $teams = "a, b, c, d, e vs e, d, c ,b , a";
         $expectedResult = [
             0 => ['a', 'b', 'c', 'd', 'e'],
             1 => ['e', 'd', 'c', 'b', 'a']
@@ -86,5 +77,30 @@ class MatchTests extends TestCase
         $match->setTeams($teams);
         $returnedTeams = $match->getTeams();
         $this->assertEquals($expectedResult, $returnedTeams);
+    }
+
+
+    public function testMatch_set_teams_can_update_teams()
+    {
+        $match = $this->match;
+        $teams = "a, b, c vs e, b, a";
+        $match->setTeams($teams);
+        $updatedTeams = "d vs f";
+        $match->setTeams($updatedTeams);
+        $expectedResult = [
+            0 => ['a', 'b', 'c', 'd'],
+            1 => ['e', 'b', 'a', 'f']
+        ];
+        $returnedTeams = $match->getTeams();
+        $this->assertEquals($expectedResult, $returnedTeams);
+    }
+
+    public function testMatch_clear_teams_empties_teams_array() {
+        $match = $this->match;
+        $teams = "a, b, c vs e, b, a";
+        $match->setTeams($teams);
+        $match->clearTeams();
+        $teams = $match->getTeams();
+        $this->assertEquals([], $teams);
     }
 }

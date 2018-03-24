@@ -1,10 +1,13 @@
 <?php
 namespace FootyBot;
 
+use BotMan\BotMan\BotMan;
+
 interface IFootyBotHandler {
     public function get();
-    public function set();
-    public function teams();
+    public function set($matchInfo);
+    public function teams($teams);
     public function join();
-    public function parseInput($message);
+    public function setBot(BotMan $bot);
+    public function leave();
 }

@@ -9,6 +9,6 @@ interface IMatch {
     public function removePlayer($player);
     public function getPlayers();
     public function getMatch();
-    public function setTeams($teams);
+    public function setTeams(string $teams);
     public function getTeams();
 }
