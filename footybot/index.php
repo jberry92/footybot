@@ -11,7 +11,7 @@ use BotMan\Drivers\Slack\SlackRTMDriver;
 
 $config = [
     'slack' => [
-        'token' => $_SERVER['SLACK_TOKEN']
+        'token' => getenv('SLACK_TOKEN')
     ]
 ];
 $loop = Factory::create();
