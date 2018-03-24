@@ -3,12 +3,10 @@
 namespace FootyBot;
 
 interface IMatch {
-    public function setMatchComplete();
-    public function isMatchComplete();
     public function addPlayer($player);
     public function removePlayer($player);
     public function getPlayers();
-    public function getMatch();
+    public function getMatchDate();
     public function setTeams(string $teams);
     public function getTeams();
 }
