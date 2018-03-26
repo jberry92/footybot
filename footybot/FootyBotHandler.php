@@ -18,6 +18,11 @@ class FootyBotHandler implements IFootyBotHandler
      */
     private $bot;
 
+    public function __destruct()
+    {
+        $this->bot->channelStorage()->save(['match' => serialize($this->match)]);
+    }
+
     public function setBot(BotMan $bot)
     {
         if (!$this->bot) {
