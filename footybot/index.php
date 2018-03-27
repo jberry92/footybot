@@ -52,6 +52,11 @@ $footyBot->hears('!footy leave', function (BotMan $bot) use ($footyBotHandler) {
     $footyBotHandler->leave();
 });
 
+$footyBot->hears('!footy done', function (BotMan $bot) use ($footyBotHandler) {
+    $footyBotHandler->setBot($bot);
+    $footyBotHandler->done();
+});
+
 $footyBot->hears('!footy', function (BotMan $bot) use ($footyBotHandler) {
     $footyBotHandler->setBot($bot);
     $footyBotHandler->get();

@@ -68,7 +68,7 @@ class FootyBotHandler implements IFootyBotHandler
         }
 
         $this->match = null;
-        $this->bot->reply("Match completed");
+        $this->bot->reply("Match completed.");
     }
 
     public function join()
