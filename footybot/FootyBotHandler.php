@@ -110,6 +110,16 @@ class FootyBotHandler implements IFootyBotHandler
         $this->bot->reply("$player left the match. That makes $playerCount.");
     }
 
+    public function remove($player)
+    {
+        $match = $this->match;
+        $match->removePlayer($player);
+        $this->bot->channelStorage()->save(['match' => serialize($this->match)]);
+        $players = $this->match->getPlayers();
+        $playerCount = count($players);
+        $this->bot->reply("$player removed from match. That makes $playerCount.");
+    }
+
     public function add($players)
     {
         $bot = $this->bot;

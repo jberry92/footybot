@@ -62,4 +62,9 @@ $footyBot->hears('!footy', function (BotMan $bot) use ($footyBotHandler) {
     $footyBotHandler->get();
 });
 
+$footyBot->hears('!footy remove {player}', function (BotMan $bot, $player) use ($footyBotHandler) {
+    $footyBotHandler->setBot($bot);
+    $footyBotHandler->remove($player);
+});
+
 $loop->run();
